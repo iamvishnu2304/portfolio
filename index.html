@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+  <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vishnu | Developer / Designer Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --primary: #ff6600;
+      --bg: #181818;
+      --text: #fff;
+      --accent: #232323;
+      --transition: 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    [data-theme="red"] {
+      --primary: #ff3b3f;
+    }
+    [data-theme="orange"] {
+      --primary: #ff6600;
+    }
+    [data-theme="green"] {
+      --primary: #22c55e;
+    }
+    [data-theme="blue"] {
+      --primary: #2563eb;
+    }
+    [data-theme="purple"] {
+      --primary: #a21caf;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      transition: background var(--transition), color var(--transition);
+      display: flex;
+    }
+    .sidebar {
+      width: 240px;
+      background: var(--accent);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 2rem 1.5rem;
+      transition: background var(--transition);
+    }
+    .logo {
+      font-size: 2.2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: var(--primary);
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    .logo span {
+      color: var(--text);
+    }
+    nav {
+      width: 100%;
+    }
+    nav ul {
+      list-style: none;
+      width: 100%;
+    }
+    nav ul li {
+      margin-bottom: 1.5rem;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      transition: color var(--transition);
+      position: relative;
+      padding-left: 2rem;
+      cursor: pointer;
+    }
+    nav ul li.active a,
+    nav ul li a:hover {
+      color: var(--primary);
+      font-weight: bold;
+    }
+    nav ul li a::before {
+      content: '';
+      display: inline-block;
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 50%;
+      background: var(--primary);
+      margin-right: 1rem;
+      opacity: 0.18;
+      transition: background var(--transition);
+    }
+    nav ul li.active a::before,
+    nav ul li a:hover::before {
+      opacity: 0.7;
+    }
+    .theme-switcher {
+      margin-top: auto;
+      display: flex;
+      gap: 0.7rem;
+      align-items: center;
+    }
+    .theme-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid #fff3;
+      cursor: pointer;
+      transition: border var(--transition), box-shadow var(--transition);
+      box-shadow: 0 0 0 0 var(--primary);
+    }
+    .theme-dot.active,
+    .theme-dot:hover {
+      border: 2px solid var(--primary);
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+    .theme-dot.red { background: #ff3b3f; }
+    .theme-dot.orange { background: #ff6600; }
+    .theme-dot.green { background: #22c55e; }
+    .theme-dot.blue { background: #2563eb; }
+    .theme-dot.purple { background: #a21caf; }
+    .main-content {
+      flex: 1;
+      padding: 3rem 5vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      transition: background var(--transition), color var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 3rem;
+      width: 100%;
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+    .profile-img {
+      width: 180px;
+      height: 220px;
+      border-radius: 18px;
+      object-fit: cover;
+      border: 4px solid var(--primary);
+      box-shadow: 0 8px 32px #0005;
+      transition: border var(--transition);
+      background: #222;
+    }
+    .intro {
+      flex: 1;
+      min-width: 260px;
+    }
+    .intro h1 {
+      font-size: 2.3rem;
+      font-weight: 700;
+      margin-bottom: 0.7rem;
+      color: var(--primary);
+      letter-spacing: 1px;
+    }
+    .intro h2 {
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+      min-height: 2.5rem;
+      letter-spacing: 1px;
+    }
+    .intro p {
+      font-size: 1.1rem;
+      color: #ccc;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+    .intro .cta-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      padding: 0.8rem 2.2rem;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 16px #0002;
+      transition: background var(--transition), color var(--transition);
+      margin-right: 1rem;
+    }
+    .intro .cta-btn:hover {
+      background: #fff;
+      color: var(--primary);
+    }
+    .section {
+      display: none;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.5s, transform 0.5s;
+      width: 100%;
+      margin-top: 2rem;
+    }
+    .section.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+      animation: fadeIn 0.7s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .section h3 {
+      color: var(--primary);
+      font-size: 1.5rem;
+      margin-bottom: 1.2rem;
+      font-weight: 600;
+    }
+    .edu-list, .skill-list, .exp-list {
+      margin-bottom: 2rem;
+    }
+    .edu-item, .exp-item {
+      margin-bottom: 1.2rem;
+      background: #232323;
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 1px 8px #0002;
+      transition: background var(--transition);
+    }
+    .edu-item .year, .exp-item .year {
+      font-size: 0.95rem;
+      color: var(--primary);
+      font-weight: bold;
+      margin-bottom: 0.2rem;
+    }
+    .edu-item .degree, .exp-item .title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    .edu-item .school, .exp-item .desc {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 0.1rem;
+    }
+    .edu-item .score {
+      font-size: 0.95rem;
+      color: #aaa;
+    }
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.1rem;
+    }
+    .skill-badge {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.5rem 1.1rem;
+      border-radius: 30px;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      box-shadow: 0 1px 8px #0002;
+      animation: popIn 0.5s;
+      transition: background var(--transition), color var(--transition);
+    }
+    @keyframes popIn {
+      from { transform: scale(0.7); opacity: 0;}
+      to { transform: scale(1); opacity: 1;}
+    }
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      width: 100%;
+      max-width: 420px;
+      margin-top: 1rem;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      padding: 0.9rem 1.1rem;
+      border: none;
+      border-radius: 8px;
+      background: #232323;
+      color: #fff;
+      font-size: 1rem;
+      resize: none;
+      outline: none;
+      transition: background var(--transition), color var(--transition);
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      background: #1a1a1a;
+      color: var(--primary);
+    }
+    .contact-form button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.9rem 1.1rem;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+    }
+    .contact-form button:hover {
+      background: #fff;
+      color: var(--primary);
+    }
+    .resume-link {
+      color: var(--primary);
+      text-decoration: underline;
+      font-weight: bold;
+      margin-left: 1rem;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: color var(--transition);
+    }
+    .resume-link:hover {
+      color: #fff;
+      background: var(--primary);
+      padding: 0.2rem 0.7rem;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+    @media (max-width: 900px) {
+      .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+      .sidebar {
+        width: 70px;
+        padding: 2rem 0.7rem;
+        align-items: center;
+      }
+      .logo {
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+      }
+      nav ul li a {
+        font-size: 0.95rem;
+        padding-left: 1.2rem;
+      }
+      .main-content {
+        padding: 2rem 2vw;
+      }
+      .profile-img {
+        width: 120px;
+        height: 150px;
+      }
+    }
+    @media (max-width: 600px) {
+      .sidebar {
+        display: none;
+      }
+      .main-content {
+        padding: 1rem 1vw;
+      }
+      .profile-header {
+        gap: 0.8rem;
+      }
+      .profile-img {
+        width: 90px;
+        height: 110px;
+      }
+    }
+  </style>
+</head>
+<body data-theme="orange">
+  <aside class="sidebar">
+    <div class="logo"><span>Port</span>folio</div>
+    <nav>
+      <ul>
+        <li class="active"><a onclick="showSection('home')">Home</a></li>
+        <li><a onclick="showSection('education')">Education</a></li>
+        <li><a onclick="showSection('skills')">Skills</a></li>
+        <li><a onclick="showSection('experience')">Experience</a></li>
+        <li><a onclick="showSection('contact')">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="theme-switcher">
+      <div class="theme-dot red" data-theme="red"></div>
+      <div class="theme-dot orange active" data-theme="orange"></div>
+      <div class="theme-dot green" data-theme="green"></div>
+      <div class="theme-dot blue" data-theme="blue"></div>
+      <div class="theme-dot purple" data-theme="purple"></div>
+    </div>
+  </aside>
+  <main class="main-content">
+    <!-- Home Section -->
+    <div class="profile-header" id="home-section">
+      <img src="Vishnu HTML.jpg" alt="Vishnu" class="profile-img">                   
+      <div class="intro">
+        <h1>Hello, It’s Me,</h1>
+        <h1>Vishnu</h1>
+        <h2 id="typed-text"></h2>
+        <p>
+          I am currently looking for opportunities in the software and design development fields, with a focus on building innovative developments. I have gained knowledge of various technologies and am continuously practicing to improve my skills and gain more exposure to achieve my goal. I have participated in multiple competitions, such as hackathons, photography, and art, where I showcased my skills in e-learning, editing, and art. I have also worked on various projects that involved designing, testing, and implementing electronic and communication systems and devices. My goal is to use my engineering skills and creativity to contribute to the advancement of technology and society.
+        </p>
+        <button class="cta-btn" onclick="showSection('contact')">Contact Me</button>
+        <a class="resume-link" href="https://drive.google.com/file/d/1IIUBLdrceRhZ1gOfJhs2S1ZR4JD_EZKx/view?usp=sharing" download>Download Resume</a>
+      </div>
+    </div>
+    <!-- Education Section -->
+    <div class="section" id="education-section">
+      <h3>Education</h3>
+      <div class="edu-list">
+        <div class="edu-item">
+          <div class="year">2025</div>
+          <div class="degree">BE - Electronics and Communication Engineering</div>
+          <div class="school">PSN College Of Engineering And Technology, Tirunelveli-627152</div>
+          <div class="score">7.2 CGPA</div>
+        </div>
+        <div class="edu-item">
+          <div class="year">2021</div>
+          <div class="degree">HSS</div>
+          <div class="school">Government Higher Secondary School, Vellanguli-627426</div>
+          <div class="score">74.93%</div>
+        </div>
+        <div class="edu-item">
+          <div class="year">2019</div>
+          <div class="degree">SSLC</div>
+          <div class="school">Government Higher Secondary School, Vellanguli-627426</div>
+          <div class="score">64.2%</div>
+        </div>
+      </div>
+    </div>
+    <!-- Skills Section -->
+    <div class="section" id="skills-section">
+      <h3>Skills</h3>
+      <div class="skill-list">
+        <span class="skill-badge">UI-UX Design</span>
+        <span class="skill-badge">Figma</span>
+        <span class="skill-badge">Photoshop</span>
+        <span class="skill-badge">Adobe Illustrator</span>
+        <span class="skill-badge">Canva</span>
+        <span class="skill-badge">Framer</span>
+        <span class="skill-badge">Wix Studio</span>
+        <span class="skill-badge">Web Development</span>
+        <span class="skill-badge">HTML</span>
+        <span class="skill-badge">CSS</span>
+        <span class="skill-badge">JavaScript</span>
+        <span class="skill-badge">AI Tools</span>
+        <span class="skill-badge">Kombai</span>
+        <span class="skill-badge">Uizard</span>
+        <span class="skill-badge">Applitools</span>
+        <span class="skill-badge">Galileo</span>
+      </div>
+    </div>
+    <!-- Experience Section -->
+    <div class="section" id="experience-section">
+      <h3>Experience</h3>
+      <div class="exp-list">
+        <div class="exp-item">
+          <div class="title">MSME Idea Hackathon 2.0 Winner</div>
+          <div class="desc">
+            Out of 13,764 ideas submitted from across India, only the top 274 were selected for a grant. I am proud to share that one of those selected ideas is mine focused on Bike Accident Prevention. This project has been awarded a grant of ₹14.25 lakhs, recognizing its potential impact and innovation</b>.
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="title">Internship</div>
+          <div class="desc">
+            I completed an internship in HTML development at Bluon Tech, located in Kovilpatti. During this internship, I gained hands-on experience in building and structuring responsive web pages using HTML. The experience helped me strengthen my understanding of front-end development fundamentals and exposed me to real-world project workflows and coding practices.
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="title">Project</div>
+          <div class="desc">
+            I developed an IoT-based Vehicle Theft Prevention System that integrates Facial Recognition and RFID technology to enhance security. The system ensures that only authorized individuals can access and operate the vehicle. Facial recognition is used to verify the identity of the driver, while the RFID tag acts as an additional layer of authentication. If either verification fails, the system prevents the vehicle from starting and sends an alert to the owner. This project demonstrates the practical application of IoT and AI in improving vehicle security.
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Contact Section -->
+    <div class="section" id="contact-section">
+      <h3>Contact Me</h3>
+      <form class="contact-form" onsubmit="return sendMessage(event)">
+        <input type="text" placeholder="First Name" required>
+        <input type="text" placeholder="Last Name" required>
+        <input type="text" placeholder="Mob. Number" value="7904207175" required>
+        <input type="email" placeholder="Email Address" value="iamvishnu2304@gmail.com" required>
+        <textarea rows="4" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </main>
+  <script>
+    // Section Navigation Animation
+    const navItems = document.querySelectorAll('nav ul li');
+    const sections = {
+      home: document.getElementById('home-section'),
+      education: document.getElementById('education-section'),
+      skills: document.getElementById('skills-section'),
+      experience: document.getElementById('experience-section'),
+      contact: document.getElementById('contact-section')
+    };
+    function showSection(name) {
+      navItems.forEach(li => li.classList.remove('active'));
+      [...navItems].find((li, idx) => {
+        if (li.textContent.trim().toLowerCase() === name) {
+          li.classList.add('active');
+          return true;
+        }
+        return false;
+      });
+      Object.keys(sections).forEach(k => {
+        if (k === name) {
+          if (k === 'home') sections[k].style.display = 'flex';
+          else sections[k].style.display = 'block';
+          setTimeout(() => sections[k].classList.add('active'), 10);
+        } else {
+          sections[k].classList.remove('active');
+          setTimeout(() => sections[k].style.display = 'none', 400);
+        }
+      });
+      // Scroll to top for mobile
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+    // Initial section
+    Object.values(sections).forEach((sec, i) => {
+      if (i === 0) {
+        sec.style.display = 'flex';
+        sec.classList.add('active');
+      } else {
+        sec.style.display = 'none';
+      }
+    });
+
+    // Theme Switcher Animation
+    const dots = document.querySelectorAll('.theme-dot');
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        dots.forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+        document.body.setAttribute('data-theme', dot.dataset.theme);
+      });
+    });
+
+    // Typing Animation
+    const typedText = document.getElementById('typed-text');
+    const roles = [
+      'UI-UX Designer',
+      'Web Developer',
+      'AI Tools Explorer'
+    ];
+    let roleIdx = 0, charIdx = 0, typing = true;
+    function typeRole() {
+      if (typing) {
+        if (charIdx < roles[roleIdx].length) {
+          typedText.textContent += roles[roleIdx][charIdx++];
+          setTimeout(typeRole, 80);
+        } else {
+          typing = false;
+          setTimeout(typeRole, 1100);
+        }
+      } else {
+        if (charIdx > 0) {
+          typedText.textContent = roles[roleIdx].substring(0, --charIdx);
+          setTimeout(typeRole, 35);
+        } else {
+          typing = true;
+          roleIdx = (roleIdx + 1) % roles.length;
+          setTimeout(typeRole, 450);
+        }
+      }
+    }
+    typeRole();
+
+    // Contact Form Animation
+    function sendMessage(e) {
+      e.preventDefault();
+      alert('Thank you for reaching out, Vishnu will contact you soon!');
+      e.target.reset();
+      return false;
+    }
+  </script>
+</body>
+</html>
