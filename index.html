@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-  <html lang="en">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Vishnu | Developer / Designer Portfolio</title>
@@ -39,6 +39,30 @@
       transition: background var(--transition), color var(--transition);
       display: flex;
     }
+    
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: background var(--transition);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    
+    .mobile-menu-btn:hover {
+      background: var(--accent);
+    }
+    
     .sidebar {
       width: 240px;
       background: var(--accent);
@@ -47,8 +71,13 @@
       flex-direction: column;
       align-items: flex-start;
       padding: 2rem 1.5rem;
-      transition: background var(--transition);
+      transition: background var(--transition), transform var(--transition);
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 999;
     }
+    
     .logo {
       font-size: 2.2rem;
       font-weight: bold;
@@ -126,6 +155,7 @@
     .theme-dot.green { background: #22c55e; }
     .theme-dot.blue { background: #2563eb; }
     .theme-dot.purple { background: #a21caf; }
+    
     .main-content {
       flex: 1;
       padding: 3rem 5vw;
@@ -137,7 +167,9 @@
       transition: background var(--transition), color var(--transition);
       position: relative;
       overflow: hidden;
+      margin-left: 240px;
     }
+    
     .profile-header {
       display: flex;
       align-items: flex-start;
@@ -333,51 +365,85 @@
       border-radius: 8px;
       text-decoration: none;
     }
+    
+    /* Mobile responsiveness */
     @media (max-width: 900px) {
+      .sidebar {
+        width: 240px;
+        transform: translateX(-100%);
+      }
+      
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 3rem 4vw;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
       .profile-header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        text-align: center;
         gap: 1.5rem;
       }
-      .sidebar {
-        width: 70px;
-        padding: 2rem 0.7rem;
+      
+      .profile-img {
+        width: 150px;
+        height: 180px;
+      }
+      
+      .intro {
+        display: flex;
+        flex-direction: column;
         align-items: center;
       }
-      .logo {
-        font-size: 1.3rem;
-        margin-bottom: 2rem;
+      
+      .intro .cta-btn {
+        margin-bottom: 1rem;
       }
-      nav ul li a {
-        font-size: 0.95rem;
-        padding-left: 1.2rem;
-      }
-      .main-content {
-        padding: 2rem 2vw;
-      }
-      .profile-img {
-        width: 120px;
-        height: 150px;
+      
+      .resume-link {
+        margin-left: 0;
       }
     }
+    
     @media (max-width: 600px) {
-      .sidebar {
-        display: none;
-      }
       .main-content {
-        padding: 1rem 1vw;
+        padding: 4rem 4vw 2rem;
       }
-      .profile-header {
-        gap: 0.8rem;
+      
+      .intro h1 {
+        font-size: 1.8rem;
       }
-      .profile-img {
-        width: 90px;
-        height: 110px;
+      
+      .intro h2 {
+        font-size: 1.5rem;
+      }
+      
+      .intro p {
+        font-size: 1rem;
+      }
+      
+      .contact-form {
+        max-width: 100%;
+      }
+      
+      .skill-badge {
+        font-size: 0.9rem;
+        padding: 0.4rem 0.9rem;
       }
     }
   </style>
 </head>
 <body data-theme="orange">
+  <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+  
   <aside class="sidebar">
     <div class="logo"><span>Port</span>folio</div>
     <nav>
@@ -397,21 +463,23 @@
       <div class="theme-dot purple" data-theme="purple"></div>
     </div>
   </aside>
+  
   <main class="main-content">
     <!-- Home Section -->
     <div class="profile-header" id="home-section">
       <img src="Vishnu HTML.jpg" alt="Vishnu" class="profile-img">                   
       <div class="intro">
-        <h1>Hello, It’s Me,</h1>
+        <h1>Hello, It's Me,</h1>
         <h1>Vishnu</h1>
         <h2 id="typed-text"></h2>
         <p>
-          I am currently looking for opportunities in the software and design development fields, with a focus on building innovative developments. I have gained knowledge of various technologies and am continuously practicing to improve my skills and gain more exposure to achieve my goal. I have participated in multiple competitions, such as hackathons, photography, and art, where I showcased my skills in e-learning, editing, and art. I have also worked on various projects that involved designing, testing, and implementing electronic and communication systems and devices. My goal is to use my engineering skills and creativity to contribute to the advancement of technology and society.
+          I am currently looking for opportunities in the software and design development fields, with a focus on building innovative developments. I have gained knowledge of various technologies and am continuously practicing to improve my skills and gain more exposure to achieve my goal. I have participated in multiple competitions, such as hackathons, photography, and art, where I showcased my skills in e-learning, editing, and art. I have also worked on various projects that involved designing, testing, and implementing electronic and communication systems and devices. My goal is to use my engineering skills and creativity to contribute to the advancement of technology and society.
         </p>
         <button class="cta-btn" onclick="showSection('contact')">Contact Me</button>
         <a class="resume-link" href="https://drive.google.com/file/d/1IIUBLdrceRhZ1gOfJhs2S1ZR4JD_EZKx/view?usp=sharing" download>Download Resume</a>
       </div>
     </div>
+    
     <!-- Education Section -->
     <div class="section" id="education-section">
       <h3>Education</h3>
@@ -436,6 +504,7 @@
         </div>
       </div>
     </div>
+    
     <!-- Skills Section -->
     <div class="section" id="skills-section">
       <h3>Skills</h3>
@@ -458,6 +527,7 @@
         <span class="skill-badge">Galileo</span>
       </div>
     </div>
+    
     <!-- Experience Section -->
     <div class="section" id="experience-section">
       <h3>Experience</h3>
@@ -465,7 +535,7 @@
         <div class="exp-item">
           <div class="title">MSME Idea Hackathon 2.0 Winner</div>
           <div class="desc">
-            Out of 13,764 ideas submitted from across India, only the top 274 were selected for a grant. I am proud to share that one of those selected ideas is mine focused on Bike Accident Prevention. This project has been awarded a grant of ₹14.25 lakhs, recognizing its potential impact and innovation</b>.
+            Out of 13,764 ideas submitted from across India, only the top 274 were selected for a grant. I am proud to share that one of those selected ideas is mine focused on Bike Accident Prevention. This project has been awarded a grant of ₹14.25 lakhs, recognizing its potential impact and innovation.
           </div>
         </div>
         <div class="exp-item">
@@ -482,6 +552,7 @@
         </div>
       </div>
     </div>
+    
     <!-- Contact Section -->
     <div class="section" id="contact-section">
       <h3>Contact Me</h3>
@@ -495,7 +566,14 @@
       </form>
     </div>
   </main>
+  
   <script>
+    // Mobile menu toggle
+    function toggleMenu() {
+      const sidebar = document.querySelector('.sidebar');
+      sidebar.classList.toggle('open');
+    }
+    
     // Section Navigation Animation
     const navItems = document.querySelectorAll('nav ul li');
     const sections = {
@@ -505,6 +583,7 @@
       experience: document.getElementById('experience-section'),
       contact: document.getElementById('contact-section')
     };
+    
     function showSection(name) {
       navItems.forEach(li => li.classList.remove('active'));
       [...navItems].find((li, idx) => {
@@ -514,6 +593,7 @@
         }
         return false;
       });
+      
       Object.keys(sections).forEach(k => {
         if (k === name) {
           if (k === 'home') sections[k].style.display = 'flex';
@@ -524,9 +604,17 @@
           setTimeout(() => sections[k].style.display = 'none', 400);
         }
       });
+      
+      // Close mobile menu after selection
+      if (window.innerWidth <= 900) {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.classList.remove('open');
+      }
+      
       // Scroll to top for mobile
       window.scrollTo({top: 0, behavior: 'smooth'});
     }
+    
     // Initial section
     Object.values(sections).forEach((sec, i) => {
       if (i === 0) {
