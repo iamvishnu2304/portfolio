@@ -45,6 +45,8 @@
       transition: background var(--transition), color var(--transition);
       overflow-x: hidden;
       line-height: 1.6; /* NEW: Consistent base line height */
+      display: flex; /* Added for sticky footer */
+      flex-direction: column; /* Added for sticky footer */
     }
 
     /* Top Header Bar */
@@ -188,10 +190,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 100vh;
+      /* min-height: 100vh; */ /* Removed for sticky footer */
+      flex: 1; /* Added for sticky footer */
       transition: background var(--transition), color var(--transition);
       position: relative;
-      overflow: hidden;
+      overflow: hidden; /* Keep this */
       width: 100%;
     }
 
@@ -200,7 +203,7 @@
       width: 100%;
       max-width: 900px;
       padding: 4rem 5vw;
-      min-height: 80vh;
+      /* min-height: 80vh; */ /* Can be adjusted or removed */
       display: block;
     }
     /* Ensure direct children have some margin */
@@ -218,7 +221,7 @@
         align-items: center;
         text-align: center;
         padding-top: calc(var(--header-height) + 3rem);
-        min-height: calc(100vh - var(--header-height));
+        min-height: calc(100vh - var(--header-height)); /* Keep this for home section height */
         justify-content: center;
     }
 
@@ -339,7 +342,8 @@
     }
     .edu-item, .exp-item, .skill-badge,
     .contact-intro-text, /* NEW: Animate contact intro text */
-    .contact-form input, .contact-form textarea, .contact-form button {
+    .contact-form input, .contact-form textarea, .contact-form button,
+    .exp-details-btn /* NEW: Animate experience button */ {
         opacity: 0; /* Start hidden */
     }
     .section.is-visible .edu-item,
@@ -348,7 +352,8 @@
     .section.is-visible .contact-intro-text, /* NEW */
     .section.is-visible .contact-form input,
     .section.is-visible .contact-form textarea,
-    .section.is-visible .contact-form button {
+    .section.is-visible .contact-form button,
+    .section.is-visible .exp-details-btn /* NEW */ {
         animation: itemFadeInUp 0.5s ease forwards;
     }
     /* Stagger Delays */
@@ -360,6 +365,10 @@
     .section.is-visible .skill-badge:nth-child(6), .section.is-visible .contact-form textarea:nth-child(5) { animation-delay: 0.35s; } /* Textarea */
     .section.is-visible .skill-badge:nth-child(7), .section.is-visible .contact-form button:nth-child(6) { animation-delay: 0.4s; } /* Button */
     .section.is-visible .skill-badge:nth-child(n+8) { animation-delay: calc(0.4s + (n - 7) * 0.05s); }
+    /* NEW: Stagger delay for experience buttons */
+    .section.is-visible .exp-item:nth-child(1) .exp-details-btn { animation-delay: 0.2s; }
+    .section.is-visible .exp-item:nth-child(2) .exp-details-btn { animation-delay: 0.25s; }
+    .section.is-visible .exp-item:nth-child(3) .exp-details-btn { animation-delay: 0.3s; }
 
 
     .section h3 {
@@ -386,7 +395,7 @@
       transition: background var(--transition), transform var(--transition), box-shadow var(--transition), opacity var(--transition);
       border-left: 4px solid var(--primary);
       text-align: left;
-      cursor: pointer; /* NEW: Indicate clickable */
+      /* cursor: pointer; */ /* Removed: No longer needed for whole box click */
     }
     .edu-item:hover, .exp-item:hover {
         transform: scale(1.03); /* NEW: Scale effect on hover */
@@ -418,6 +427,32 @@
       color: #aaa;
       margin-top: 0.3rem;
     }
+
+    /* NEW: Experience Item Links */
+    .exp-item .exp-links {
+        margin-top: 0.8rem; /* Add space above the button */
+        text-align: right; /* Align button to the right */
+    }
+    .exp-details-btn {
+        display: inline-block;
+        background-color: rgba(var(--primary-rgb), 0.15); /* Subtle background */
+        color: var(--primary);
+        border: 1px solid var(--primary);
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background-color var(--transition), color var(--transition), transform var(--transition), opacity var(--transition); /* Added opacity */
+        cursor: pointer;
+        opacity: 0; /* Start hidden for animation */
+    }
+    .exp-details-btn:hover {
+        background-color: var(--primary);
+        color: var(--bg); /* Change text color on hover for contrast */
+        transform: translateY(-2px);
+    }
+
 
     /* Skills Section */
     .skill-list {
@@ -617,6 +652,21 @@
         animation: rotateIcon 2s ease-in-out infinite;
     }
 
+    /* NEW: Footer Styles */
+    .site-footer {
+        width: 100%;
+        background-color: var(--accent); /* Match other subtle backgrounds */
+        color: #aaa; /* Less prominent text color */
+        text-align: center;
+        padding: 1.5rem 5vw;
+        margin-top: auto; /* Pushes footer to bottom with flexbox */
+        font-size: 0.9rem;
+        border-top: 1px solid #333; /* Subtle separator */
+    }
+    .site-footer p {
+        margin: 0;
+    }
+
 
     /* Mobile responsiveness */
     @media (max-width: 900px) {
@@ -675,6 +725,7 @@
       }
       #home {
           padding-top: calc(var(--header-height) + 2rem);
+          min-height: calc(100vh - var(--header-height)); /* Adjust min-height */
       }
       .profile-img {
         width: 180px;
@@ -692,6 +743,10 @@
       .contact-popup {
           bottom: 85px;
           right: 20px;
+      }
+      .exp-item .exp-links {
+          text-align: left; /* Align left on smaller screens */
+          margin-top: 1rem;
       }
     }
 
@@ -735,6 +790,15 @@
       }
       #home {
           padding-top: calc(var(--header-height) + 1.5rem);
+          min-height: calc(100vh - var(--header-height)); /* Adjust min-height */
+      }
+      .site-footer {
+          font-size: 0.85rem;
+          padding: 1rem 5vw;
+      }
+      .exp-details-btn {
+          font-size: 0.85rem;
+          padding: 0.3rem 0.8rem;
       }
     }
   </style>
@@ -780,7 +844,7 @@
         </p>
         <div class="intro-buttons">
             <button class="cta-btn" onclick="scrollToSection('contact')">Contact Me</button>
-            <a class="resume-link" href="https://drive.google.com/file/d/1TSECbEJNJkGx5kbPS1IxNmrhl8AnpX9b/view" target="_blank" rel="noopener noreferrer">View Resume</a>
+            <a class="resume-link" href="https://drive.google.com/file/d/1TSECbEJNJkGx5kbPS1IxNmrhl8AnpX9b/view?usp=drive_link" target="_blank" rel="noopener noreferrer">View Resume</a>
         </div>
       </div>
     </section>
@@ -788,20 +852,20 @@
     <section class="section" id="education">
       <h3>Education</h3>
       <div class="edu-list">
-        <!-- NEW: Added onclick to scroll to section -->
-        <div class="edu-item" onclick="scrollToSection('education')">
+        <!-- Removed onclick from edu-item divs as they don't need individual links -->
+        <div class="edu-item">
           <div class="year">2025</div>
           <div class="degree">BE - Electronics and Communication Engineering</div>
           <div class="school">PSN College Of Engineering And Technology, Tirunelveli-627152</div>
           <div class="score">7.2 CGPA</div>
         </div>
-        <div class="edu-item" onclick="scrollToSection('education')">
+        <div class="edu-item">
           <div class="year">2021</div>
           <div class="degree">HSS</div>
           <div class="school">Government Higher Secondary School, Vellanguli-627426</div>
           <div class="score">74.93%</div>
         </div>
-        <div class="edu-item" onclick="scrollToSection('education')">
+        <div class="edu-item">
           <div class="year">2019</div>
           <div class="degree">SSLC</div>
           <div class="school">Government Higher Secondary School, Vellanguli-627426</div>
@@ -835,23 +899,34 @@
     <section class="section" id="experience">
       <h3>Experience</h3>
       <div class="exp-list">
-        <!-- NEW: Added onclick to scroll to section -->
-        <div class="exp-item" onclick="scrollToSection('experience')">
+        <!-- Removed onclick from exp-item divs, added button inside -->
+        <div class="exp-item">
           <div class="title">MSME Idea Hackathon 2.0 Winner</div>
           <div class="desc">
             Out of 13,764 ideas submitted from across India, only the top 274 were selected for a grant. I am proud to share that one of those selected ideas is mine focused on Bike Accident Prevention. This project has been awarded a grant of ₹14.25 lakhs, recognizing its potential impact and innovation.
           </div>
+          <!-- NEW: Link Button -->
+          <div class="exp-links">
+            <a href="https://iamvishnu2304.github.io/AppaTrack-Website/" class="exp-details-btn" target="_blank" rel="noopener noreferrer">View Details</a> <!-- Replace # with your actual link -->
+          </div>
         </div>
-        <div class="exp-item" onclick="scrollToSection('experience')">
+        <div class="exp-item">
+          <div class="title">Experlance CG - Web & Design Marketplace</div>
+          <div class="desc">
+            Experlance CG is a freelance marketplace website I designed and developed to connect clients with skilled professionals in web development, design, and digital marketing. The platform features project listings, freelancer profiles, secure authentication, and a clean, responsive UI built with Tailwind CSS. Clients can post projects, review proposals, and manage collaborations, while freelancers can showcase their work and find jobs.          </div>
+          <!-- NEW: Link Button -->
+          <div class="exp-links">
+            <a href="#" class="exp-details-btn" target="_blank" rel="noopener noreferrer">View Details</a> <!-- Replace # with your actual link -->
+          </div>
+        </div>
+        <div class="exp-item">
           <div class="title">Internship - HTML Development</div>
           <div class="desc">
             Completed an internship at Bluon Tech, Kovilpatti. Gained hands-on experience building and structuring responsive web pages using HTML, strengthening front-end fundamentals and exposure to real-world project workflows.
           </div>
-        </div>
-        <div class="exp-item" onclick="scrollToSection('experience')">
-          <div class="title">Project - IoT Vehicle Security System</div>
-          <div class="desc">
-            Developed an IoT-based Vehicle Theft Prevention System integrating Facial Recognition and RFID. The system verifies driver identity and RFID tag authentication, preventing unauthorized operation and sending owner alerts upon failure. Demonstrated practical application of IoT and AI for enhanced vehicle security.
+          <!-- NEW: Link Button -->
+          <div class="exp-links">
+            <a href="#" class="exp-details-btn" target="_blank" rel="noopener noreferrer">View Certificate</a> <!-- Replace # with your actual link -->
           </div>
         </div>
       </div>
@@ -864,13 +939,15 @@
         Let's work Together<br>
         Feel free to reach out and connect! I'm just a click away, eager to collaborate and explore new opportunities together.
       </p>
-      <form class="contact-form" onsubmit="return sendMessage(event)">
+      <!-- IMPORTANT: Added id="contactForm" and id="submitButton" and feedback div for Google Apps Script -->
+      <form class="contact-form" id="contactForm" onsubmit="return false;"> <!-- Changed onsubmit to prevent default HTML submission -->
         <input type="text" name="firstName" placeholder="First Name" required>
         <input type="text" name="lastName" placeholder="Last Name" required>
         <input type="tel" name="phone" placeholder="Mob. Number" value="7904207175" required>
         <input type="email" name="email" placeholder="Email Address" value="iamvishnu2304@gmail.com" required>
         <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
-        <button type="submit">Send Message</button>
+        <button type="submit" id="submitButton">Send Message</button>
+        <div id="formFeedback" style="display: none; margin-top: 1rem; text-align: center;"></div> <!-- Feedback message area -->
       </form>
     </section>
   </main>
@@ -910,6 +987,11 @@
       <!-- Add your actual profile links above -->
   </div>
 
+  <!-- NEW: Footer -->
+  <footer class="site-footer">
+      <p>&copy; <span id="currentYear"></span> Vishnu. All Rights Reserved.</p>
+  </footer>
+
 
   <script>
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
@@ -937,7 +1019,7 @@
     }, false);
 
 
-    // --- Smooth Scroll on Nav Click (or Box Click) ---
+    // --- Smooth Scroll on Nav Click ---
     function scrollToSection(name) {
       const sectionElement = document.getElementById(name);
       if (sectionElement) {
@@ -1027,6 +1109,12 @@
             document.getElementById(currentActive)?.classList.add('is-visible');
 
         }, 150); // Increased timeout slightly
+
+        // --- Set Footer Year ---
+        const yearSpan = document.getElementById('currentYear');
+        if (yearSpan) {
+            yearSpan.textContent = new Date().getFullYear();
+        }
     });
 
 
@@ -1088,28 +1176,32 @@
         }
       }
     }
-    typeRole();
-
-
-    // --- Contact Form Submission ---
-    function sendMessage(e) {
-      e.preventDefault();
-      const form = e.target;
-      const button = form.querySelector('button[type="submit"]');
-      const originalButtonText = button.textContent;
-
-      button.textContent = 'Sending...';
-      button.disabled = true;
-
-      setTimeout(() => {
-          alert('Thank you for reaching out! Vishnu will contact you soon.');
-          form.reset();
-          button.textContent = originalButtonText;
-          button.disabled = false;
-      }, 1000);
-
-      return false;
+    // Only start typing if the element exists
+    if (typedText) {
+        typeRole();
     }
+
+
+    // --- Contact Form Submission (Placeholder - Replaced by Google Apps Script below) ---
+    // function sendMessage(e) {
+    //   e.preventDefault();
+    //   const form = e.target;
+    //   const button = form.querySelector('button[type="submit"]');
+    //   const originalButtonText = button.textContent;
+
+    //   button.textContent = 'Sending...';
+    //   button.disabled = true;
+
+    //   setTimeout(() => {
+    //       alert('Thank you for reaching out! Vishnu will contact you soon.');
+    //       form.reset();
+    //       button.textContent = originalButtonText;
+    //       button.disabled = false;
+    //   }, 1000);
+
+    //   return false;
+    // }
+
     // --- Contact Popup Logic ---
     const contactFab = document.getElementById('contactFab');
     const contactPopup = document.getElementById('contactPopup');
@@ -1124,58 +1216,76 @@
             contactPopup.classList.remove('active');
         });
 
+        // Close popup if clicking outside of it
         document.addEventListener('click', (event) => {
+            // Check if the click is outside the popup AND outside the FAB
             if (!contactPopup.contains(event.target) && !contactFab.contains(event.target)) {
                 contactPopup.classList.remove('active');
             }
         });
     }
-        // Contact form handling with Google Apps Script
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+
+    // --- Contact form handling with Google Apps Script ---
+    const contactForm = document.getElementById('contactForm'); // Get form by ID
+
+    if (contactForm) { // Check if the form exists before adding listener
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent default form submission
 
             const submitButton = document.getElementById('submitButton');
             const formFeedback = document.getElementById('formFeedback');
 
+            // Ensure elements exist before using them
+            if (!submitButton || !formFeedback) {
+                console.error("Submit button or feedback element not found.");
+                return;
+            }
+
+            const originalButtonText = submitButton.textContent; // Store original text
             submitButton.textContent = 'Sending...';
             submitButton.disabled = true;
-            formFeedback.style.display = 'none';
+            formFeedback.style.display = 'none'; // Hide previous feedback
 
             const formData = new FormData(this);
             const data = {};
-            formData.forEach((value, key) => data[key] = value); // Correctly populate data object
+            formData.forEach((value, key) => data[key] = value);
 
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbyArtYYt96NnTBZOSujf7liQrz7jgErHPQG6kI8cm-qLwj-2IPQtF4bhPUpzGVZjlZm4w/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyArtYYt96NnTBZOSujf7liQrz7jgErHPQG6kI8cm-qLwj-2IPQtF4bhPUpzGVZjlZm4w/exec'; // Your script URL
 
             fetch(scriptURL, {
                 method: 'POST',
-                mode: 'no-cors',
+                mode: 'no-cors', // Important for cross-origin requests to Apps Script without complex setup
                 headers: {
-                    'Content-Type': 'application/json',
+                    // 'Content-Type': 'application/json', // Not needed for no-cors with FormData usually, but doesn't hurt
                 },
-                body: JSON.stringify(data)
+                body: formData // Send FormData directly when using no-cors
             })
-            .then(() => {
+            .then(response => { // 'no-cors' means we don't get a real response body, but the request was likely sent
                 console.log('Form submitted (no-cors). Assuming success.');
                 formFeedback.style.display = 'block';
-                formFeedback.style.color = '#00b4db';
+                formFeedback.style.color = 'var(--primary)'; // Use theme color
                 formFeedback.textContent = 'Thank you for your message! I will get back to you soon.';
-                this.reset();
-                submitButton.textContent = 'Send Message';
+                this.reset(); // Reset the form fields
+                submitButton.textContent = originalButtonText; // Restore button text
                 submitButton.disabled = false;
+                // Hide feedback message after 5 seconds
                 setTimeout(() => {
                     formFeedback.style.display = 'none';
                 }, 5000);
             })
             .catch(error => {
-                console.error('Error!', error.message);
+                console.error('Error submitting form:', error);
                 formFeedback.style.display = 'block';
-                formFeedback.style.color = 'red';
-                formFeedback.textContent = 'Sorry, there was an error sending your message. Please try again later.';
-                submitButton.textContent = 'Send Message';
+                formFeedback.style.color = '#ff3b3f'; // Use a distinct error color (like red theme)
+                formFeedback.textContent = 'Sorry, there was an error sending your message. Please try again later or use the contact links.';
+                submitButton.textContent = originalButtonText; // Restore button text
                 submitButton.disabled = false;
             });
         });
+    } else {
+        console.warn("Contact form with id 'contactForm' not found.");
+    }
+
   </script>
 </body>
 </html>
